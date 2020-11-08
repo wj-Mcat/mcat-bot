@@ -30,15 +30,15 @@ class MyBot(Wechaty):
         from_contact = msg.talker()
         text = msg.text()
         room = msg.room()
-        if text == '#ding':
+        if text == 'ding':
             conversation: Union[
                 Room, Contact] = from_contact if room is None else room
             await conversation.ready()
             await conversation.say('dong')
             file_box = FileBox.from_url(
-                'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/'
-                'u=1116676390,2305043183&fm=26&gp=0.jpg',
+                'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1116676390,2305043183&fm=26&gp=0.jpg',
                 name='ding-dong.jpg')
+            # file_box = FileBox.from_file('./ding-dong.jpg', name='head.jpg')
             await conversation.say(file_box)
 
     async def on_login(self, contact: Contact):
