@@ -33,7 +33,7 @@ class TimeMentionPlugin(WechatyPlugin):
     async def on_message(self, msg: Message):
         text = msg.text()
         if text.startswith('time '):
-            args = text[6:].split()
+            args = text[5:].split()
             try:
                 args = self.parser.parse_args(args)
 

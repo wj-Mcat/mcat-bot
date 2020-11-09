@@ -10,6 +10,7 @@ from wechaty import Wechaty, Contact
 from wechaty.user import Message, Room
 
 from skills.time_mention import TimeMentionPlugin
+from skills.gpt_chitchat import GptChitChatPlugin
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -62,7 +63,8 @@ async def main():
 
     # skills
     time_mention_skill = TimeMentionPlugin()
-    bot.use(time_mention_skill)
+    gpt_chitchat_skill = GptChitChatPlugin()
+    bot.use(time_mention_skill).use(gpt_chitchat_skill)
     await bot.start()
 
 
