@@ -28,6 +28,7 @@ class GptChitChatPlugin(WechatyPlugin):
         text = msg.text()
         if text.startswith('gpt '):
             try:
+
                 text = text[4:].split()
                 args = self.argparse.parse_args(text)
                 length = args.l
