@@ -2,7 +2,9 @@
 # pylint: disable=R0801
 import asyncio
 import logging
+import os
 from typing import Optional, Union
+from dotenv import load_dotenv
 
 from wechaty_puppet import FileBox, ScanStatus  # type: ignore
 
@@ -47,18 +49,30 @@ class MyBot(Wechaty):
 
     async def on_scan(self, status: ScanStatus, qr_code: Optional[str] = None,
                       data: Optional[str] = None):
-        contact = self.Contact.load(self.contact_id)
-        print(f'user <{contact}> scan status: {status.name} , '
-              f'qr_code: {qr_code}')
+        log.info('scan')        
+        # contact = self.Contact.load(self.contact_id)
+        # print(f'user <{contact}> scan status: {status.name} , '
+        #       f'qr_code: {qr_code}')
 
 
 bot: Optional[MyBot] = None
+
+
+def validate_env():
+    token = os.environ['WECHATY_PUPPET_HOSTIE_TOKEN']
+    log.info(f"receive the token: <{token}>")
+    if 'rock' not in token:
+        os.environ['WECHATY_PUPPET_HOSTIE_ENDPOINT'] = ''
+    else:
+        endpoint = os.environ['WECHATY_PUPPET_HOSTIE_ENDPOINT']
+        log.info(f"receive the endpoint: <{endpoint}>")
 
 
 async def main():
     """doc"""
     # pylint: disable=W0603
     global bot
+    validate_env()
     bot = MyBot()
 
     # skills

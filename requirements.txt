@@ -2,3 +2,4 @@ wechaty
 apscheduler
 jieba
 tokenizers
+python-dotenv
