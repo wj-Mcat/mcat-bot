@@ -43,7 +43,12 @@ class MyBot(Wechaty):
                 name='ding-dong.jpeg')
             # file_box = FileBox.from_file('./ding-dong.jpg', name='head.jpg')
             await conversation.say(file_box)
-
+        elif text == 'haha':
+            conversation: Union[
+                Room, Contact] = from_contact if room is None else room
+            await conversation.ready()
+            await conversation.say('balabala')
+            
     async def on_login(self, contact: Contact):
         print(f'user: {contact} has login')
 
