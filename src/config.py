@@ -9,7 +9,7 @@ def _get_version() -> str:
 
 
 version = _get_version()
-_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S %f')
+_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-login_welcome_words = f'<MCatBot>version: <{version}>\nI"m alive\ntime: <{_now}>'
-logout_welcome_words = f'<MCatBot>version: <{version}>\nI"m gonna logout\ntime: <{_now}>'
+login_welcome_words = f'[Mcat-Bot]\nversion: <{version}>\ntime: <{_now}>\nI"m alive'
+logout_welcome_words = f'[Mcat-Bot]\nversion: <{version}>\ntime: <{_now}>\nI"m gonna logout'

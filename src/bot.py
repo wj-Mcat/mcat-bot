@@ -51,10 +51,11 @@ class MyBot(Wechaty):
         log.info(f'contact<{contact}> has login')
 
         # 1. load cat account
-        contact = self.Contact.find(ContactQueryFilter(weixin='pure-_--love'))
+        contact = await self.Contact.find(ContactQueryFilter(weixin='pure-_--love'))
         if not contact:
             raise ValueError('contact<pure-_--love> not found')
-        await self._message_center.say(login_welcome_words)
+        self._message_center = contact
+        await self.message_center.say(login_welcome_words)
 
     async def on_friendship(self, friendship: Friendship):
         """accept friends"""

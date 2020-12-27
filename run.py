@@ -20,6 +20,8 @@ async def main():
     """doc"""
     # pylint: disable=W0603
     global bot
+    import os
+    os.environ['WECHATY_PUPPET_HOSTIE_TOKEN'] = 'puppet_donut_ffb8809cdee97035'
     bot = MyBot()
 
     # skills
