@@ -3,3 +3,4 @@ apscheduler
 jieba
 tokenizers
 python-dotenv
+wechaty-plugin-contrib

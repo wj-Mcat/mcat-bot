@@ -1,11 +1,9 @@
 from typing import Optional
 import argparse
-from dataclasses import dataclass
-from skills.gpt_chitchat import gpt_api
+from src.skills.gpt_chitchat import gpt_api
 from wechaty_puppet import get_logger
 
 from wechaty import WechatyPlugin, Message, Wechaty, WechatyPluginOptions
-from tokenizers import BertWordPieceTokenizer
 
 log = get_logger('GptChitchatPlugin')
 
