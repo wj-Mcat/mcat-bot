@@ -21,7 +21,7 @@ async def main():
     # pylint: disable=W0603
     global bot
     import os
-    os.environ['WECHATY_PUPPET_HOSTIE_TOKEN'] = 'puppet_donut_ffb8809cdee97035'
+    os.environ['WECHATY_PUPPET_HOSTIE_TOKEN'] = 'your-token'
     bot = MyBot()
 
     # skills
