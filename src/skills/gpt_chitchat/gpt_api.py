@@ -1,45 +1,32 @@
-from typing import Union, Optional
+from typing import Union, Optional, List
 
 from wechaty_puppet import get_logger
-from tokenizers import BertWordPieceTokenizer, Tokenizer
 import requests
 
 log = get_logger('GptChitChat')
-__tokenizer__: Optional[Tokenizer] = None
-
-
-def get_tokenizer() -> Tokenizer:
-    global __tokenizer__
-    if not __tokenizer__:
-        log.info('GprChitchatPlugin get_tokenizer()')
-        __tokenizer__ = BertWordPieceTokenizer.from_file('./skills/gpt_chitchat/clue-vocab.txt')
-    return __tokenizer__
-
 
 def get_gpt_response(sentence: str, length: 30) -> Union[str, None]:
     log.info('GprChitchatPlugin getGptResponse(%s, %s)', sentence, length)
 
-    # 1. get the tokenizer
-    tokenizer = get_tokenizer()
-
-    # 2. encode the sentence
-    encode_result = tokenizer.encode(sentence)
-
     # 3. send the encoded sentence result
     data = {
         "instances": [{
-            "inp": encode_result.ids,
-            "length": length
-        }]
+        "length": len(sentence) + length + 3,
+        "tokens": ['<S1>'] + list(sentence) + ['</S1>', '<S2>']
+        }],
     }
-    res = requests.post('http://dev.chatie.io:8506/v1/models/gpt:predict', json=data)
+    res = requests.post('http://dev.chatie.io:8501/v1/models/chat:predict', json=data)
 
     # 4. decode the response from the gpt
     data = res.json()
     if 'predictions' not in data:
         return None
-    decoded_text = tokenizer.decode_batch(data['predictions'])[0]
+    
+    tokens: List[str] = data['predictions'][0]['tokens']
 
-    # 5. remove the blanks in decoded text
-    decoded_text = decoded_text.replace(' ', '')
+    start_index = tokens.index('<S2>')
+    end_index = tokens.index('</S2>')
+    decoded_text = tokens[start_index + 1: end_index]
+    decoded_text = ''.join(decoded_text)
+    decoded_text = decoded_text.replace('</s>', '')
     return decoded_text

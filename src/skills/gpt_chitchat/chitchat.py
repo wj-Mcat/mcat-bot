@@ -21,18 +21,28 @@ class GptChitChatPlugin(WechatyPlugin):
         self.argparse.add_argument('-q', required=True, type=str, help='the query feed into gpt2 model')
         self.argparse.add_argument('-l', required=False, type=int, default=30, help='the length of response')
 
+    def get_notion(self, text: str):
+        if text.startswith('魔镜魔镜'):
+            return True, text[4:]
+        if text.startswith('小可爱'):
+            return True, text[3:]
+        return False, None
+            
+
     async def on_message(self, msg: Message):
         """listen message event and chit with users"""
         text = msg.text()
-        if text.startswith('gpt '):
+        notion, content = self.get_notion(text)
+        text = content or text
+        mention_me = await msg.mention_self()
+        if notion or mention_me:
             try:
-
-                text = text[4:].split()
-                args = self.argparse.parse_args(text)
-                length = args.l
-                query = args.q
-                res_text = gpt_api.get_gpt_response(query, length)
+                # args = self.argparse.parse_args(text)
+                # length = args.l
+                # query = args.q
+                res_text = gpt_api.get_gpt_response(text, 20)
                 await msg.say(res_text)
             except Exception as e:
-                help_msg = self.argparse.format_help()
-                await msg.say(help_msg)
+                pass
+                # help_msg = self.argparse.format_help()
+                # await msg.say(help_msg)
