@@ -17,6 +17,7 @@ if __name__ == "__main__":
     bot = Wechaty(options)
     bot.use([
         APIPlugin(),
+        DingDongPlugin(),
         RSSPlugin()
     ])
     message_controller.init_plugins(bot)
