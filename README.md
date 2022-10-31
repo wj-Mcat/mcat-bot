@@ -1,6 +1,6 @@
 # mcat-bot
 
-![](./assets/cat-bot-digital-logo-with-text.png)
+![](./bot.png)
 
 powerful personal wechaty chatbot, which can save your time.
 
