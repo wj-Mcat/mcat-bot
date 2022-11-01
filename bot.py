@@ -32,6 +32,7 @@ async def main():
         RSSPlugin()
     ])
     message_controller.init_plugins(bot)
+    await bot.start()
     
 
 if __name__ == "__main__":
