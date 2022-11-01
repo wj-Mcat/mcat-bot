@@ -1,5 +1,6 @@
 """template of your bot"""
 from __future__ import annotations
+from argparse import ArgumentParser
 import asyncio
 from wechaty import Wechaty, WechatyOptions
 from wechaty_plugin_contrib.message_controller import message_controller
@@ -9,10 +10,20 @@ from wechaty_plugin_contrib.contrib.rss_plugin import RSSPlugin
 from dotenv import load_dotenv
 
 
-if __name__ == "__main__":
+def get_args():
+    """get args which only contains port"""
+    parser = ArgumentParser()
+    parser.add_argument("--port", default=8081, required=False)
+    args = parser.parse_args()
+    print(args)
+    return args
+    
+
+async def main():
+    args = get_args()
     load_dotenv()
     options = WechatyOptions(
-        port=80,
+        port=args.port,
     )
     bot = Wechaty(options)
     bot.use([
@@ -21,4 +32,7 @@ if __name__ == "__main__":
         RSSPlugin()
     ])
     message_controller.init_plugins(bot)
-    asyncio.run(bot.start())
+    
+
+if __name__ == "__main__":
+    asyncio.run(main())
