@@ -5,14 +5,14 @@ from wechaty import Wechaty, WechatyOptions
 from wechaty_plugin_contrib.message_controller import message_controller
 from wechaty_plugin_contrib.contrib.api_plugin import APIPlugin
 from wechaty_plugin_contrib.contrib.ding_dong_plugin import DingDongPlugin
-from wechaty_plugin_contrib.contrib.rss_plugin import RSSPlugin
+from mcat_bot.plugins.rss import RSSPlugin
 from dotenv import load_dotenv
 
 
 if __name__ == "__main__":
     load_dotenv()
     options = WechatyOptions(
-        port=80,
+        port=8034,
     )
     bot = Wechaty(options)
     bot.use([
