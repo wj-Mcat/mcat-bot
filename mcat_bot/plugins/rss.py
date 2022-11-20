@@ -14,7 +14,6 @@ from wechaty import WechatyPlugin
 def is_room(conv_id: str) -> bool:
     return conv_id.endswith("@chatroom")
 
-
 @dataclass
 class FeedNews:
     """FeedNews instance"""
@@ -48,6 +47,11 @@ def parse(url) -> List[FeedNews]:
     return news
 
 
+@dataclass
+class RSSPluginOptions(WechatyPluginOptions):
+    send_all_at_first_time: bool = False
+
+
 class RSSPlugin(WechatyPlugin):
     """rss plugins which can push rss news into Contact & Rooms
 
@@ -60,17 +64,21 @@ class RSSPlugin(WechatyPlugin):
     """
     VIEW_URL = '/api/plugvins/rss/view'
 
-    def __init__(self, options: Optional[WechatyPluginOptions] = None):
+    def __init__(self, options: Optional[RSSPluginOptions] = None):
         """_summary_
 
         Args:
             options (Optional[WechatyPluginOptions], optional): _description_. Defaults to None.
         """
+        options = options or RSSPluginOptions()
         super().__init__(options)
         self._init_default_setting()
         self.rss_job_id = "rss_plugin_job"
         self.fetch_feed_command = "bot rss"
     
+    async def init_plugin(self, wechaty: Wechaty) -> None:
+        await self.restart_jobs()
+
     def _init_default_setting(self):
         """init default setting for setting"""
         default_setting = {
@@ -79,6 +87,8 @@ class RSSPlugin(WechatyPlugin):
                 "https://www.ruanyifeng.com/blog/atom.xml",
                 "https://openai.com/blog/rss/"
             ],
+            "room_ids": [],
+            "contact_ids": [],
             "read": {},
             "max_news": 5
         }
@@ -86,7 +96,6 @@ class RSSPlugin(WechatyPlugin):
         self.setting = default_setting
     
     async def blueprint(self, app: Quart) -> None:
-
         @app.route(self.VIEW_URL)
         async def rss_view():
             basedir = os.path.dirname(__file__)
@@ -119,7 +128,7 @@ class RSSPlugin(WechatyPlugin):
             room = self.bot.Room.load(conv_id)
             await room.say(new.to_url_link())
         else:
-            contact = self.bot.Contact.load(conv_id)  
+            contact = self.bot.Contact.load(conv_id)
             await contact.say(new.to_url_link())
     
     async def fetch_news(self, conv_id: str) -> None:
@@ -132,10 +141,12 @@ class RSSPlugin(WechatyPlugin):
         for feed_url in feed_urls:
             news:List[FeedNews] = parse(feed_url)
             for new in news:
-                if new.id in setting['read']:
+                # room-newid 联合对应
+                new_conv_id = f"{conv_id}-{new.id}"
+                if new_conv_id in setting['read']:
                     continue
 
-                setting["read"][new.id] = True
+                setting["read"][new_conv_id] = True
                 await self.push_news(new, conv_id)
         self.setting = setting
     

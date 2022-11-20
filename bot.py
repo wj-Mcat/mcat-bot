@@ -3,6 +3,7 @@ from __future__ import annotations
 from argparse import ArgumentParser
 import asyncio
 from wechaty import Wechaty, WechatyOptions
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from wechaty_plugin_contrib.message_controller import message_controller
 from wechaty_plugin_contrib.contrib.api_plugin import APIPlugin
 from wechaty_plugin_contrib.contrib.ding_dong_plugin import DingDongPlugin
@@ -24,6 +25,7 @@ async def main():
     load_dotenv()
     options = WechatyOptions(
         port=args.port,
+        scheduler=AsyncIOScheduler()
     )
     bot = Wechaty(options)
     bot.use([
