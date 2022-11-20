@@ -2,3 +2,4 @@ wechaty
 wechaty-plugin-contrib
 python-dotenv
 pyparsing
+cos-python-sdk-v5

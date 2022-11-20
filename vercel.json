@@ -1,0 +1,4 @@
+{
+    "buildCommand": "python bot.py",
+    "installCommand": "make install"
+}
