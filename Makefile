@@ -5,7 +5,5 @@ bot:
 
 .PHONY: install
 install:
-	yum install libsqlite3-dev
-	# yum install -y gcc make sqlite-devel zlib-devel libffi-devel openssl-devel
 	pip3 install -r requirements.txt
 
