@@ -1,4 +1,9 @@
 
+.PHONY: bot
+bot:
+	python bot.py
+
 .PHONY: install
 install:
-	pip install -r requirements.txt
+	pip3 install -r requirements.txt
+
