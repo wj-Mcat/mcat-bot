@@ -7,6 +7,8 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from wechaty_plugin_contrib.message_controller import message_controller
 from wechaty_plugin_contrib.contrib.api_plugin import APIPlugin
 from wechaty_plugin_contrib.contrib.ding_dong_plugin import DingDongPlugin
+from wechaty_plugin_contrib.contrib.chat_history_plugin import ChatHistoryPlugin, ChatHistoryPluginOptions
+from mcat_bot.plugins.apscheduler_plugin import ApSchedulerPlugin
 from mcat_bot.plugins.rss import RSSPlugin
 from dotenv import load_dotenv
 
@@ -31,7 +33,9 @@ async def main():
     bot.use([
         APIPlugin(),
         DingDongPlugin(),
-        RSSPlugin()
+        RSSPlugin(),
+        ApSchedulerPlugin(),
+        ChatHistoryPlugin()
     ])
     message_controller.init_plugins(bot)
 
