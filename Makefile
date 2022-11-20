@@ -1,7 +1,7 @@
 
 .PHONY: bot
 bot:
-	python bot.py
+	python3.9 bot.py
 
 .PHONY: install
 install:
